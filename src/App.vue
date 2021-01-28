@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
       <div class="container-fluid">
-        <img alt="dog icon" class="me-2" src="./assets/dog_icon.svg" style="height: 38px">
+        <img alt="dog icon" class="me-2" src="./assets/logo.png" style="height: 38px">
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarsExampleDefault"
