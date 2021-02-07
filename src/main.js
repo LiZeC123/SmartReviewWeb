@@ -25,7 +25,7 @@ if (sessionStorage.getItem('token')) {
 router.beforeEach((to, from, next) => {
     const isLogin = store.state.token;  // 是否登录
 
-    if (!isLogin) {
+    if (!isLogin && to.path !== "/login") {
         // 未登录状态；跳转至login
         router.push({path: '/login'}).then(()=>{});
     }
