@@ -22,6 +22,24 @@ if (sessionStorage.getItem('token')) {
     store.commit('set_token', sessionStorage.getItem('token'))
 }
 
+router.beforeEach((to, from, next) => {
+    const isLogin = store.state.token;  // 是否登录
+
+    if (!isLogin) {
+        // 未登录状态；跳转至login
+        router.push({path: '/login'}).then(()=>{});
+    }
+
+    if (to.path === '/login') {
+        // 已登录状态；当路由到login时，跳转至home
+        if (isLogin) {
+            router.push({path: '/home/recent'}).then(()=>{}) ;
+        }
+    }
+    next();
+});
+
+
 new Vue({
     router,
     store,

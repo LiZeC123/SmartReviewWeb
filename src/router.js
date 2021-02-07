@@ -14,6 +14,7 @@ Vue.use(VueRouter)
 export default new VueRouter({
     mode: 'history',
     routes: [
+        { path: '/', redirect: '/home/recent'},
         {path: '/login', component: Login},
         {
             path: '/home', component: Main,
