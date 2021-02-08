@@ -4,7 +4,7 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-        <div class="col" v-for="(card, index) in cards" v-bind:key="card.title">
+        <div class="col" v-for="(card, index) in cards" v-bind:key="card.id">
           <div class="card shadow-sm">
             <!--                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"-->
             <!--                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"-->
@@ -57,7 +57,7 @@ export default {
 
     }
   },
-  mounted() {
+  created() {
     this.$axios({
       method: 'get',
       url:'knowledge/selectAll',
