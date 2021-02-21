@@ -3,11 +3,13 @@
     <form id="createForm" onsubmit="return false;">
       <label>应用类型</label>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" value="EnglishWorkBook" name="appRadio" id="flexCheckDefault">
+        <input class="form-check-input" type="radio" value="EnglishWordBook" name="appRadio"
+               id="flexCheckDefault" v-model="appType">
         <label class="form-check-label" for="flexCheckDefault">英语单词本</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" value="LeetCodeNote" name="appRadio" id="flexCheckChecked" checked>
+        <input class="form-check-input" type="radio" value="LeetCodeNote" name="appRadio"
+               id="flexCheckChecked" v-model="appType">
         <label class="form-check-label" for="flexCheckChecked">
           LeetCode记录本
         </label>
@@ -26,12 +28,10 @@
         <label for="textInputContent">知识点正文</label>
       </div>
 
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="textInputLink" aria-describedby="textInputLinkHelp"
-               placeholder="扩展链接" v-model="link">
-        <small id="textInputLinkHelp" class="form-text text-muted">与此知识点关联的资源链接</small>
-        <label for="textInputLink">扩展链接</label>
-      </div>
+
+      <english-word-book-link v-if="appType==='EnglishWordBook'" ref="linkComp"
+                              v-bind:title="title"></english-word-book-link>
+      <leet-code-note-link v-if="appType==='LeetCodeNote'" ref="linkComp"></leet-code-note-link>
 
       <div class="form-floating mb-3">
         <input type="text" class="form-control" id="textInputTag" aria-describedby="textInputTagHelp"
@@ -47,15 +47,19 @@
 </template>
 
 <script>
+import EnglishWordBookLink from "@/components/link/EnglishWordBookLink";
+import LeetCodeNoteLink from "@/components/link/LeetCodeNoteLink";
+
 export default {
   name: "KnowledgeForm",
+  components: {LeetCodeNoteLink, EnglishWordBookLink},
   data: function () {
     return {
-      appType: "",
+      appType: "EnglishWordBook",
       title: "",
       content: "",
-      link: "",
-      tag: ""
+      links: [],
+      tag: "英语单词本;",
     }
   },
   methods: {
@@ -64,10 +68,12 @@ export default {
         "appType": this.appType,
         "title": this.title,
         "content": this.content,
-        "link": this.link,
+        "link": this.$refs.englishWordBook.links
+            .map(i => i.name + " --> " + i.url)
+            .reduce((a, b) => a + "\n" + b),
         "tag": this.tag
       }
-
+      console.log(knowledge);
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
           console.log("Success")
@@ -75,7 +81,20 @@ export default {
 
         console.log(response)
       })
-
+    },
+  },
+  watch: {
+    appType: function (newType) {
+      switch (newType) {
+        case "EnglishWordBook":
+          this.tag = "英语单词本;";
+          break;
+        case "LeetCodeNote":
+          this.tag = "力扣题解;";
+          break;
+        default:
+          console.warn("未定义的类型", newType)
+      }
     }
   }
 }
