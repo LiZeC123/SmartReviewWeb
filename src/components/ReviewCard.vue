@@ -60,8 +60,15 @@ export default {
   created() {
     this.$axios({
       method: 'get',
-      url:'knowledge/selectAll',
-    }).then(response => this.cards=response.data.data)
+      url: 'knowledge/selectAll',
+    }).then(response => {
+      this.cards = response.data.data;
+      for(let card of this.cards) {
+        let tags = card.tag.split(";");
+        tags.splice(tags.length - 1, 1);
+        card.tag = tags;
+      }
+    })
   }
 }
 </script>
