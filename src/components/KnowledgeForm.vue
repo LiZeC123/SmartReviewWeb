@@ -68,7 +68,7 @@ export default {
         "appType": this.appType,
         "title": this.title,
         "content": this.content,
-        "link": this.$refs.englishWordBook.links
+        "link": this.$refs.linkComp.links
             .map(i => i.name + " --> " + i.url)
             .reduce((a, b) => a + "\n" + b),
         "tag": this.tag
