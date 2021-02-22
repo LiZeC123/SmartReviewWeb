@@ -1,17 +1,23 @@
 <template>
   <div class="row py-3 my-5 mx-2">
-    <form id="createForm" onsubmit="return false;">
+
+    <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert"
+         style="position: fixed; top: 56px;left: 0;z-index: 999">
+      <strong>创建成功</strong> 知识点已进入自动复习队列
+    </div>
+
+    <form id="createForm" class="mx-auto" onsubmit="return false;">
       <label>应用类型</label>
-      <div class="form-check form-check-inline">
+      <div class="form-check form-check-inline mx-2">
         <input class="form-check-input" type="radio" value="EnglishWordBook" name="appRadio"
                id="flexCheckDefault" v-model="appType">
         <label class="form-check-label" for="flexCheckDefault">英语单词本</label>
       </div>
-      <div class="form-check form-check-inline">
+      <div class="form-check form-check-inline mx-2">
         <input class="form-check-input" type="radio" value="LeetCodeNote" name="appRadio"
                id="flexCheckChecked" v-model="appType">
         <label class="form-check-label" for="flexCheckChecked">
-          LeetCode记录本
+          LeetCode题解
         </label>
       </div>
       <div class="form-floating my-3">
@@ -82,7 +88,9 @@ export default {
       console.log(knowledge);
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
-          console.log("Success")
+          const alert = $('#submitAlert')
+          alert.addClass("show");
+          setTimeout(() => alert.removeClass("show"), 1500);
         }
 
         console.log(response)
