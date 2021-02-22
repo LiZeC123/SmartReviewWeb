@@ -49,6 +49,7 @@
 <script>
 import EnglishWordBookLink from "@/components/link/EnglishWordBookLink";
 import LeetCodeNoteLink from "@/components/link/LeetCodeNoteLink";
+import $ from "jquery"
 
 export default {
   name: "KnowledgeForm",
@@ -59,7 +60,7 @@ export default {
       title: "",
       content: "",
       links: [],
-      tag: "英语单词本;",
+      tag: ["英语单词本"],
     }
   },
   methods: {
@@ -69,8 +70,13 @@ export default {
         "title": this.title,
         "content": this.content,
         "link": this.$refs.linkComp.links
-            .map(i => i.name + " --> " + i.url)
-            .reduce((a, b) => a + "\n" + b),
+            .map(i => {
+              return {
+                "name": i.name,
+                "url": i.url
+              }
+            }),
+
         "tag": this.tag
       }
       console.log(knowledge);
@@ -87,10 +93,10 @@ export default {
     appType: function (newType) {
       switch (newType) {
         case "EnglishWordBook":
-          this.tag = "英语单词本;";
+          this.tag = ["英语单词本"];
           break;
         case "LeetCodeNote":
-          this.tag = "力扣题解;";
+          this.tag = ["力扣题解"];
           break;
         default:
           console.warn("未定义的类型", newType)
