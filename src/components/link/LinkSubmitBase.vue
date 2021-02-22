@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <!--    放置一个空按照, 从而阻止其他按钮相应enter键  -->
+    <!--    放置一个空按钮, 从而阻止其他按钮相应enter键  -->
     <button style="display: none"></button>
 
 
@@ -34,7 +34,7 @@
       <tbody>
       <tr v-for="(link,index) in links" v-bind:key="link.name">
         <td>{{ link.name }}</td>
-        <td><a :href="updateLink(link)" target="_blank">{{ updateLink(link) }}</a></td>
+        <td><a :href="link.url" target="_blank">{{ link.url }}</a></td>
         <td :class="'text-center'">
           <button class="btn btn-danger" @click="deleteLink(index)">删除</button>
         </td>
@@ -56,11 +56,14 @@ export default {
         name: "",
         url: ""
       },
+      builtinLinks: [],
+      commitLinks: [],
       links: [],
     };
   },
   methods: {
     createLink: function () {
+      this.commitLinks.push(this.newLink);
       this.links.push(this.newLink);
       this.newLink = {name: "", url: ""};
     },
@@ -68,14 +71,6 @@ export default {
       console.log("Delete:" + index);
       this.links.splice(index, 1);
     },
-    updateLink: function (link) {
-      const builtin = ["初阶韦氏词典", "高阶韦氏词典", "必应搜索图片", "必应搜索词典"];
-      if (builtin.includes(link.name)) {
-        return link.url + this.title;
-      } else {
-        return link.url;
-      }
-    }
   },
 }
 </script>
