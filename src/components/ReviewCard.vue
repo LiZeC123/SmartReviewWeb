@@ -4,7 +4,11 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-        <div class="col" v-for="(card, index) in cards" v-bind:key="card.id">
+        <div v-if="cards.length === 0" class="mx-auto">
+          <p>太棒了, 现在没有要复习的知识点了</p>
+        </div>
+
+        <div class="col" v-for="(card, index) in cards" :key="card.id">
           <div class="card shadow-sm">
             <div class="card-header">{{ card.title }}</div>
 

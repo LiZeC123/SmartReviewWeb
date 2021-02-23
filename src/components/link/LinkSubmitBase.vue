@@ -23,7 +23,7 @@
     <button style="display: none"></button>
 
 
-    <table class="table">
+    <table class="table" v-if="links.length !== 0">
       <thead>
       <tr>
         <th>资源名称</th>
