@@ -2,24 +2,33 @@
   <div class="row py-3 my-5 mx-2">
 
     <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert"
-         style="position: fixed; top: 56px;left: 0;z-index: 999">
+         style="position: fixed; top: 56px;left: 0; z-index: 99;display: none">
       <strong>创建成功</strong> 知识点已进入自动复习队列
     </div>
 
     <form id="createForm" class="mx-auto" onsubmit="return false;">
-      <label>应用类型</label>
-      <div class="form-check form-check-inline mx-2">
-        <input class="form-check-input" type="radio" value="EnglishWordBook" name="appRadio"
-               id="flexCheckDefault" v-model="appType">
-        <label class="form-check-label" for="flexCheckDefault">英语单词本</label>
+      <div class="appTypeGroup">
+        <label>应用类型</label>
+
+        <div class="form-check form-check-inline mx-2">
+          <input class="form-check-input" type="radio" value="EnglishWordBook" id="radioEnglish"
+                 v-model="appType">
+          <label class="form-check-label" for="radioEnglish">英语单词本</label>
+        </div>
+
+        <div class="form-check form-check-inline mx-2">
+          <input class="form-check-input" type="radio" value="LeetCodeNote" id="radioLeet"
+                 v-model="appType">
+          <label class="form-check-label" for="radioLeet">LeetCode题解</label>
+        </div>
+
+        <div class="form-check form-check-inline mx-2">
+          <input class="form-check-input" type="radio" value="Test" id="radioTest"
+                 v-model="appType">
+          <label class="form-check-label" for="radioTest">Test模块</label>
+        </div>
       </div>
-      <div class="form-check form-check-inline mx-2">
-        <input class="form-check-input" type="radio" value="LeetCodeNote" name="appRadio"
-               id="flexCheckChecked" v-model="appType">
-        <label class="form-check-label" for="flexCheckChecked">
-          LeetCode题解
-        </label>
-      </div>
+
       <div class="form-floating my-3">
         <input type="text" class="form-control" id="textInputTitle" aria-describedby="textInputTitleHelp"
                placeholder="知识点标题" v-model="title">
@@ -89,8 +98,11 @@ export default {
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
           const alert = $('#submitAlert')
-          alert.addClass("show");
-          setTimeout(() => alert.removeClass("show"), 1500);
+          alert.addClass("show").css("display","block");
+          setTimeout(() => alert.removeClass("show").css("display","none"), 1500);
+          this.title = "";
+          this.content = "";
+          this.$refs.linkComp.links = [];
         }
 
         console.log(response)
