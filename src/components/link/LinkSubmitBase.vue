@@ -23,7 +23,7 @@
     <button style="display: none"></button>
 
 
-    <table class="table" v-if="links.length !== 0">
+    <table class="table" v-if="commitLinks.length !== 0 || builtinLinks.length !== 0">
       <thead>
       <tr>
         <th>资源名称</th>
@@ -32,13 +32,25 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(link,index) in links" v-bind:key="link.name">
+
+      <!-- 渲染内置的链接 -->
+      <tr v-for="link in builtinLinks" v-bind:key="link.name">
+        <td>{{ link.name }}</td>
+        <td><a :href="link.url" target="_blank">{{ link.url }}</a></td>
+        <td :class="'text-center'">
+          <button class="btn btn-secondary disabled">删除</button>
+        </td>
+      </tr>
+
+      <!-- 渲染用户提交的链接 -->
+      <tr v-for="(link,index) in commitLinks" v-bind:key="link.name">
         <td>{{ link.name }}</td>
         <td><a :href="link.url" target="_blank">{{ link.url }}</a></td>
         <td :class="'text-center'">
           <button class="btn btn-danger" @click="deleteLink(index)">删除</button>
         </td>
       </tr>
+
       </tbody>
     </table>
   </div>
@@ -48,7 +60,7 @@
 export default {
   name: "LinkSubmitBase",
   props: {
-    title: String
+    builtinLinks: Array
   },
   data: function () {
     return {
@@ -56,22 +68,43 @@ export default {
         name: "",
         url: ""
       },
-      builtinLinks: [],
       commitLinks: [],
-      links: [],
     };
   },
   methods: {
     createLink: function () {
       this.commitLinks.push(this.newLink);
-      this.links.push(this.newLink);
       this.newLink = {name: "", url: ""};
+      this.commit();
     },
     deleteLink: function (index) {
-      console.log("Delete:" + index);
-      this.links.splice(index, 1);
+      this.commitLinks.splice(index, 1);
+      this.commit();
     },
+    commit: function () {
+      let links = [];
+
+      for(let link of this.builtinLinks) {
+        links.push(link);
+      }
+
+      for(let link of this.commitLinks) {
+        links.push(link);
+      }
+
+      this.$emit('link-change', links);
+    }
   },
+  watch: {
+    'builtinLinks': function (newValue) {
+      if (newValue.length === 0) {
+        this.commitLinks = [];
+        this.newLink = {name: "", url: ""};
+      }
+
+      this.commit();
+    }
+  }
 }
 </script>
 

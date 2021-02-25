@@ -43,10 +43,7 @@
         <label for="textInputContent">知识点正文</label>
       </div>
 
-
-      <english-word-book-link v-if="appType==='EnglishWordBook'" ref="linkComp"
-                              v-bind:title="title"></english-word-book-link>
-      <leet-code-note-link v-if="appType==='LeetCodeNote'" ref="linkComp"></leet-code-note-link>
+      <component :is="appType" :title="title" @link-change="updateLink"></component>
 
       <div class="form-floating mb-3">
         <input type="text" class="form-control" id="textInputTag" aria-describedby="textInputTagHelp"
@@ -62,13 +59,13 @@
 </template>
 
 <script>
-import EnglishWordBookLink from "@/components/link/EnglishWordBookLink";
-import LeetCodeNoteLink from "@/components/link/LeetCodeNoteLink";
+import EnglishWordBook from "@/components/link/EnglishWordBook";
+import LeetCodeNote from "@/components/link/LeetCodeNote";
 import $ from "jquery"
 
 export default {
   name: "KnowledgeForm",
-  components: {LeetCodeNoteLink, EnglishWordBookLink},
+  components: {LeetCodeNote, EnglishWordBook},
   data: function () {
     return {
       appType: "EnglishWordBook",
@@ -79,33 +76,26 @@ export default {
     }
   },
   methods: {
+    updateLink: function (links) {
+      this.links = links;
+    },
     submitInfo: function () {
       const knowledge = {
         "appType": this.appType,
         "title": this.title,
         "content": this.content,
-        "link": this.$refs.linkComp.links
-            .map(i => {
-              return {
-                "name": i.name,
-                "url": i.url
-              }
-            }),
-
+        "link": this.links,
         "tag": this.tag
       }
       console.log(knowledge);
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
           const alert = $('#submitAlert')
-          alert.addClass("show").css("display","block");
-          setTimeout(() => alert.removeClass("show").css("display","none"), 1500);
+          alert.addClass("show").css("display", "block");
+          setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
           this.title = "";
           this.content = "";
-          this.$refs.linkComp.links = [];
         }
-
-        console.log(response)
       })
     },
   },
