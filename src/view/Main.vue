@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="h-100">
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
       <div class="container-fluid">
         <img alt="icon" class="me-2" src="../assets/logo.png" style="height: 38px">
@@ -22,7 +22,10 @@
               <router-link class="nav-link" to="/home/recent">最近复习</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/home/knowledge">创建知识</router-link>
+              <router-link class="nav-link" to="/home/create">创建知识</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/home/tag">标签管理</router-link>
