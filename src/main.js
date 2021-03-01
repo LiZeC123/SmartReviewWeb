@@ -18,8 +18,8 @@ axios.interceptors.request.use(config => {
 
 
 // 页面刷新时，重新赋值token
-if (sessionStorage.getItem('token')) {
-    store.commit('set_token', sessionStorage.getItem('token'))
+if (localStorage.getItem('token')) {
+    store.commit('set_token', localStorage.getItem('token'))
 }
 
 router.beforeEach((to, from, next) => {
