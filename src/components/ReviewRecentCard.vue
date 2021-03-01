@@ -28,7 +28,7 @@
             </div>
 
             <div class="card-body">
-              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag[0]">{{ tag }}</span>
+              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag">{{ tag }}</span>
             </div>
 
             <div class="card-footer" id="card-btn-group">

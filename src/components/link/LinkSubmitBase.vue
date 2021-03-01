@@ -103,6 +103,19 @@ export default {
       }
 
       this.commit();
+    },
+    'newLink.url': function (newValue) {
+      this.$axios({
+        method:"get",
+        url: "/link/getLinkTitle",
+        params: {
+          "link": newValue
+        }
+      }).then(response => {
+        if(response.data.success) {
+          this.newLink.name = response.data.data;
+        }
+      })
     }
   }
 }
