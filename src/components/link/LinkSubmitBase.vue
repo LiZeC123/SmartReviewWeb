@@ -60,7 +60,8 @@
 export default {
   name: "LinkSubmitBase",
   props: {
-    builtinLinks: Array
+    builtinLinks: Array,
+    clear: Boolean
   },
   data: function () {
     return {
@@ -96,8 +97,8 @@ export default {
     }
   },
   watch: {
-    'builtinLinks': function (newValue) {
-      if (newValue.length === 0) {
+    'clear': function (newValue) {
+      if (newValue === true) {
         this.commitLinks = [];
         this.newLink = {name: "", url: ""};
       }

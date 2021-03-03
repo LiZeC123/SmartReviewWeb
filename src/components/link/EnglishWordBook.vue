@@ -1,6 +1,5 @@
 <template>
-  <link-submit-base :builtin-links="updatedBuiltinLink"
-                    @link-change="commit"> </link-submit-base>
+  <link-submit-base :builtin-links="updatedBuiltinLink" :clear="clear" @link-change="commit"></link-submit-base>
 </template>
 
 <script>
@@ -9,7 +8,7 @@ import LinkSubmitBase from "@/components/link/LinkSubmitBase";
 export default {
   components: {LinkSubmitBase},
   name: "EnglishWordBook",
-  props:{
+  props: {
     title: String
   },
   computed: {
@@ -24,6 +23,9 @@ export default {
         {name: "必应搜索图片", url: "https://cn.bing.com/images/search?q=" + this.title},
         {name: "必应搜索词典", url: "https://cn.bing.com/dict/search?q=" + this.title}
       ];
+    },
+    clear: function () {
+      return this.title === "";
     }
   },
   methods: {

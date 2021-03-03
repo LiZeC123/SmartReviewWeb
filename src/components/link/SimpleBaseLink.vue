@@ -1,5 +1,5 @@
 <template>
-  <link-submit-base :builtin-links="updatedBuiltinLink" @link-change="commit"></link-submit-base>
+  <link-submit-base :builtin-links="updatedBuiltinLink" :clear="clear" @link-change="commit"></link-submit-base>
 </template>
 
 <script>
@@ -15,6 +15,9 @@ export default {
   computed: {
     updatedBuiltinLink: function () {
       return []
+    },
+    clear: function () {
+      return this.title === "";
     }
   },
   methods: {

@@ -1,6 +1,5 @@
 <template>
-  <link-submit-base :builtin-links="updatedBuiltinLink"
-                    @link-change="commit"> </link-submit-base>
+  <link-submit-base :builtin-links="updatedBuiltinLink" :clear="clear" @link-change="commit"></link-submit-base>
 </template>
 
 <script>
@@ -9,12 +8,15 @@ import LinkSubmitBase from "@/components/link/LinkSubmitBase";
 export default {
   components: {LinkSubmitBase},
   name: "LeetCodeNote",
-  props:{
+  props: {
     title: String
   },
-  computed:{
-    updatedBuiltinLink: function() {
+  computed: {
+    updatedBuiltinLink: function () {
       return [];
+    },
+    clear: function () {
+      return this.title === "";
     }
   },
 
