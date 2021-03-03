@@ -21,6 +21,7 @@ export default {
   },
   methods: {
     createKnowledge: function (knowledge) {
+      console.log(knowledge);
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
           this.doSubmit = false;
