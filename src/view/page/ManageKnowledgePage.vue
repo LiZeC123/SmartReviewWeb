@@ -13,15 +13,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="record in records" :key="record.id">
+        <tr v-for="(record, index) in records" :key="record.id">
           <th>{{ typeToName(record.appType) }}</th>
           <th>{{ record.title }}</th>
           <th>{{ record.reviewCount }}</th>
           <th>{{ hourToDay(record.currentInterval) }}</th>
           <th>{{ record.nextReviewTime }}</th>
           <th>
-            <button class="btn btn-secondary mx-2">修改</button>
-            <button class="btn btn-danger">删除</button>
+            <button class="btn btn-secondary mx-2" @click="modifyKnowledge(record.id)">修改</button>
+            <button class="btn btn-danger" @click="deleteKnowledge(record.id, index)">删除</button>
           </th>
         </tr>
         </tbody>
@@ -73,15 +73,39 @@ export default {
       }
 
       return day;
+    },
+    initKnowledgeList: function () {
+      this.$axios({
+        method: 'get',
+        url: 'knowledge/queryAllRecord',
+      }).then(response => {
+        this.records = response.data.data;
+      });
+    },
+    modifyKnowledge: function (id) {
+      this.$router.push({
+        name: "ModifyKnowledgePage",
+        query: {
+          "id": id
+        }
+      })
+    },
+    deleteKnowledge: function (id, index) {
+      this.$axios({
+        method: "get",
+        url: "knowledge/deleteKnowledge",
+        params: {
+          "kid": id
+        }
+      }).then(response => {
+        if (response.data.success) {
+          this.records.splice(index, 1);
+        }
+      })
     }
   },
   created() {
-    this.$axios({
-      method: 'get',
-      url: 'knowledge/queryAllRecord',
-    }).then(response => {
-      this.records = response.data.data;
-    })
+    this.initKnowledgeList();
   }
 }
 </script>
