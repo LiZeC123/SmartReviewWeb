@@ -43,7 +43,8 @@
         <label for="textInputContent">知识点正文</label>
       </div>
 
-      <component :is="linkType" :title="title" :builtinLinks="[]" @link-change="updateLink"></component>
+      <component :is="linkType" :title="title" :links="getInitLinks" :submit="doSubmit" :clear="clear"
+                 @link-change="updateLink"></component>
 
       <hr/>
 
@@ -70,7 +71,8 @@ export default {
   props: {
     doSubmit: Boolean,
     doShow: Boolean,
-    showMessage: String
+    showMessage: String,
+    knowledge: Object,
   },
   data: function () {
     return {
@@ -78,13 +80,16 @@ export default {
       title: "",
       content: "",
       links: [],
+      initLinks: [],
       tags: [],
-      tagList: []
+      tagList: [],
     }
   },
   methods: {
     updateLink: function (links) {
       this.links = links;
+      //子模块完成提交操作后, 再提交完整的数据
+      this.submitKnowledge();
     },
     appTypeTag: function (appType) {
       switch (appType) {
@@ -96,6 +101,17 @@ export default {
           return "力扣题解";
       }
     },
+    submitKnowledge: function () {
+      const knowledge = {
+        "appType": this.appType,
+        "title": this.title,
+        "content": this.content,
+        "link": this.links,
+        "tag": this.tags
+      }
+
+      this.$emit('submit', knowledge);
+    },
     resetForm: function () {
       this.title = "";
       this.content = "";
@@ -104,6 +120,9 @@ export default {
   },
   computed: {
     linkType: function () {
+      if (this.knowledge !== undefined) {
+        return SimpleBaseLink;
+      }
       switch (this.appType) {
         case "Base":
           return SimpleBaseLink;
@@ -114,32 +133,30 @@ export default {
         default:
           return SimpleBaseLink;
       }
+    },
+    getInitLinks: function () {
+      return this.initLinks;
+    },
+    clear: function () {
+      return this.title === "";
     }
   },
   watch: {
-    'doSubmit': function (newValue) {
-      if (newValue === true) {
-        const knowledge = {
-          "appType": this.appType,
-          "title": this.title,
-          "content": this.content,
-          "link": this.links,
-          "tag": this.tags
-        }
-        knowledge.tag.push(this.appTypeTag(this.appType));
-
-        console.log(knowledge);
-        this.$emit('submit', knowledge);
-      }
-    },
     'doShow': function (newValue) {
-      console.log("Do Show Value = ", newValue);
       if (newValue === true) {
         const alert = $('#submitAlert')
         alert.addClass("show").css("display", "block");
         setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
         this.resetForm();
         this.$emit('after-show');
+      }
+    },
+    'knowledge': function (knowledge) {
+      if (knowledge !== undefined) {
+        this.title = knowledge.title;
+        this.content = knowledge.content;
+        this.initLinks = knowledge.link;
+        this.tags = knowledge.tag;
       }
     }
   },
