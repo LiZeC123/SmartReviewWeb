@@ -1,5 +1,6 @@
 <template>
-  <link-submit-base :builtin-links="updatedBuiltinLink" :clear="clear" @link-change="commit"></link-submit-base>
+  <link-submit-base :builtin-links="[]" :init-commit-links="commitLinks" :clear="clear" :submit="submit"
+                    @link-change="commit"></link-submit-base>
 </template>
 
 <script>
@@ -10,15 +11,19 @@ export default {
   components: {LinkSubmitBase},
   name: "SimpleBaseLink",
   props: {
-    title: String
+    title: String,
+    links: Array,
+    submit: Boolean,
+    clear:Boolean
   },
   computed: {
-    updatedBuiltinLink: function () {
-      return []
+    commitLinks: function () {
+      if (this.links === undefined) {
+        return [];
+      } else {
+        return this.links;
+      }
     },
-    clear: function () {
-      return this.title === "";
-    }
   },
   methods: {
     commit: function (links) {
