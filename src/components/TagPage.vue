@@ -12,7 +12,6 @@
         <tr v-for="record in records" :key="record.id">
           <th>{{ record.name }}</th>
           <th>
-            <button class="btn btn-secondary mx-2">修改</button>
             <button class="btn btn-danger" @click="deleteTag(record.id)">删除</button>
           </th>
         </tr>

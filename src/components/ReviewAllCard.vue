@@ -56,6 +56,8 @@ export default {
           return "英语单词本"
         case "LeetCodeNote":
           return "力扣题解";
+        case "Base":
+          return "基础记录";
         default:
           return appType;
       }
