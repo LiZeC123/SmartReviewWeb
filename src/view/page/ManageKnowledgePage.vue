@@ -20,7 +20,7 @@
           <th>{{ hourToDay(record.currentInterval) }}</th>
           <th>{{ record.nextReviewTime }}</th>
           <th>
-            <button class="btn btn-secondary mx-2">更新</button>
+            <button class="btn btn-secondary mx-2">修改</button>
             <button class="btn btn-danger">删除</button>
           </th>
         </tr>
@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: "ReviewAllCard",
+  name: "ManageKnowledgePage",
   data: function () {
     return {
       records: []

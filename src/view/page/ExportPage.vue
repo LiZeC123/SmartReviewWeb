@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  name: "ExportTable",
+  name: "ExportPage",
   data: function () {
     return {
       records: []
