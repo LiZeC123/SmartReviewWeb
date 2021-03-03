@@ -1,14 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
 
-import KnowledgeForm from "@/components/KnowledgeForm";
 import ReviewRecentCard from "@/components/ReviewRecentCard";
 
 import Login from "@/view/Login";
 import Main from "@/view/Main";
-import ReviewAllCard from "@/components/ReviewAllCard";
-import ExportTable from "@/components/ExportTable";
-import TagPage from "@/components/TagPage";
+import ManageKnowledgePage from "@/view/page/ManageKnowledgePage";
+import ExportPage from "@/view/page/ExportPage";
+import TagPage from "@/view/page/TagPage";
+import CreateKnowledgePage from "@/view/page/CreateKnowledgePage";
 
 
 Vue.use(VueRouter)
@@ -22,10 +22,10 @@ export default new VueRouter({
             path: '/home', component: Main,
             children: [
                 {path: 'recent', component: ReviewRecentCard},
-                {path: 'create', component: KnowledgeForm},
-                {path: 'knowledge', component: ReviewAllCard},
+                {path: 'create', component: CreateKnowledgePage},
+                {path: 'knowledge', component: ManageKnowledgePage},
                 {path: 'tag', component: TagPage},
-                {path: 'export', component: ExportTable}
+                {path: 'export', component: ExportPage}
             ]
         }
     ]

@@ -1,12 +1,11 @@
 <template>
   <div class="row py-3 my-5 mx-2">
 
-    <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert"
-         style="position: fixed; top: 56px;left: 0; z-index: 99;display: none">
-      <strong>创建成功</strong> 知识点已进入自动复习队列
+    <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert">
+      <strong>提交成功</strong> {{ showMessage }}
     </div>
 
-    <form id="createForm" class="mx-auto" onsubmit="return false;">
+    <div class="mx-auto container">
       <div class="appTypeGroup">
         <label>应用类型</label>
 
@@ -55,29 +54,24 @@
           <label class="form-check-label" for="inlineCheckbox1">{{ tag.name }}</label>
         </div>
       </div>
-
-      <!--      <div class="form-floating mb-3">-->
-      <!--        <input type="text" class="form-control" id="textInputTag" aria-describedby="textInputTagHelp"-->
-      <!--               placeholder="标签" v-model="tag">-->
-      <!--        <small id="textInputTagHelp" class="form-text text-muted">与此知识点关联的标签</small>-->
-      <!--        <label for="textInputTag">标签</label>-->
-      <!--      </div>-->
-
-      <button type="submit" class="btn btn-primary float-end" @click="submitInfo">创建知识点</button>
-
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import EnglishWordBook from "@/components/link/EnglishWordBook";
 import LeetCodeNote from "@/components/link/LeetCodeNote";
-import $ from "jquery"
 import SimpleBaseLink from "@/components/link/SimpleBaseLink";
+import $ from "jquery";
 
 export default {
   name: "KnowledgeForm",
   components: {SimpleBaseLink, LeetCodeNote, EnglishWordBook},
+  props: {
+    doSubmit: Boolean,
+    doShow: Boolean,
+    showMessage: String
+  },
   data: function () {
     return {
       appType: "Base",
@@ -92,27 +86,6 @@ export default {
     updateLink: function (links) {
       this.links = links;
     },
-    submitInfo: function () {
-      const knowledge = {
-        "appType": this.appType,
-        "title": this.title,
-        "content": this.content,
-        "link": this.links,
-        "tag": this.tags
-      }
-      knowledge.tag.push(this.appTypeTag(this.appType));
-
-      console.log(knowledge);
-      this.$axios.post('/knowledge/create', knowledge).then(response => {
-        if (response.data.success) {
-          const alert = $('#submitAlert')
-          alert.addClass("show").css("display", "block");
-          setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
-          this.title = "";
-          this.content = "";
-        }
-      })
-    },
     appTypeTag: function (appType) {
       switch (appType) {
         case "Base" :
@@ -122,11 +95,15 @@ export default {
         case "LeetCodeNote":
           return "力扣题解";
       }
+    },
+    resetForm: function () {
+      this.title = "";
+      this.content = "";
+      this.tags = [];
     }
   },
   computed: {
     linkType: function () {
-      console.log("update appType", this.appType);
       switch (this.appType) {
         case "Base":
           return SimpleBaseLink;
@@ -136,6 +113,33 @@ export default {
           return LeetCodeNote;
         default:
           return SimpleBaseLink;
+      }
+    }
+  },
+  watch: {
+    'doSubmit': function (newValue) {
+      if (newValue === true) {
+        const knowledge = {
+          "appType": this.appType,
+          "title": this.title,
+          "content": this.content,
+          "link": this.links,
+          "tag": this.tags
+        }
+        knowledge.tag.push(this.appTypeTag(this.appType));
+
+        console.log(knowledge);
+        this.$emit('submit', knowledge);
+      }
+    },
+    'doShow': function (newValue) {
+      console.log("Do Show Value = ", newValue);
+      if (newValue === true) {
+        const alert = $('#submitAlert')
+        alert.addClass("show").css("display", "block");
+        setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
+        this.resetForm();
+        this.$emit('after-show');
       }
     }
   },
@@ -153,5 +157,11 @@ export default {
 </script>
 
 <style scoped>
-
+#submitAlert {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  z-index: 99;
+  display: none;
+}
 </style>
