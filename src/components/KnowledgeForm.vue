@@ -91,16 +91,6 @@ export default {
       //子模块完成提交操作后, 再提交完整的数据
       this.submitKnowledge();
     },
-    appTypeTag: function (appType) {
-      switch (appType) {
-        case "Base" :
-          return "默认分类";
-        case "EnglishWordBook":
-          return "英语单词本";
-        case "LeetCodeNote":
-          return "力扣题解";
-      }
-    },
     submitKnowledge: function () {
       const knowledge = {
         "appType": this.appType,
