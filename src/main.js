@@ -10,6 +10,7 @@ Vue.prototype.$axios = axios
 
 axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(config => {
+    // 这是一个函数, 因此并不会在定义时立即执行, 而是在每次发送请求时执行此操作
     if(store.state.token) {
         config.headers.common['Authorization'] = store.state.token;
     }
