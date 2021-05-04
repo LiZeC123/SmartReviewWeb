@@ -20,7 +20,7 @@
           <th>{{ hourToDay(record.currentInterval) }}</th>
           <th>{{ record.nextReviewTime }}</th>
           <th>
-            <button class="btn btn-secondary mx-2" @click="modifyKnowledge(record.id)">修改</button>
+            <button class="btn btn-secondary mx-2" @click="modifyKnowledge(record.id)">详情</button>
             <button class="btn btn-danger" @click="deleteKnowledge(record.id, index)">删除</button>
           </th>
         </tr>

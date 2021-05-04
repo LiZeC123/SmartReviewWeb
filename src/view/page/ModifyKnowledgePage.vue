@@ -2,7 +2,7 @@
   <div>
     <knowledge-form :do-submit="doSubmit" :show-message="showMessage" :do-show="doShow" :knowledge="knowledge"
                     @submit="updateKnowledge" @after-show="afterShow"></knowledge-form>
-    <button type="submit" class="btn btn-primary float-end me-4" @click="sendSubmit">更新知识点</button>
+<!--    <button type="submit" class="btn btn-primary float-end me-4" @click="sendSubmit">更新知识点</button>-->
   </div>
 </template>
 
