@@ -80,10 +80,8 @@ export default {
   },
   created() {
     this.$axios.get("user/getCurrentUserName").then(response => {
-      console.log(response)
       if (response.data.success) {
         this.username = response.data.data
-        console.log(["new Username => ", this.username])
       }
     });
   }
