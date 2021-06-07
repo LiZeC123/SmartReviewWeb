@@ -41,7 +41,7 @@
                  data-bs-toggle="dropdown"
                  aria-expanded="false">用户</a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown01">
-                <li class="dropdown-item">当前身份: <strong>{{ username }}</strong></li>
+                <li class="dropdown-item">当前用户: <strong>{{ username }}</strong></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
